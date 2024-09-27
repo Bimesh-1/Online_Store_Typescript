@@ -16,6 +16,7 @@ export interface Product {
 
 const initialState = {
     products: [] as Product[],
+    cart: [] as Product[],
 }
 
 export const fetchProducts = createAsyncThunk('products/fetchProducts', async () => {
@@ -26,7 +27,11 @@ export const fetchProducts = createAsyncThunk('products/fetchProducts', async ()
 export const productSlice = createSlice({
     name: "product",
     initialState,
-    reducers: {},
+    reducers: {
+        addToCart: (state, action) =>{
+            state.cart = [...state.cart, action.payload]
+        }
+    },
     extraReducers: (builder) => {
         //The below types define the return type of the action as a Product[] array.
         builder.addCase(fetchProducts.fulfilled, (state, action: PayloadAction<Product[]>) => {
@@ -34,5 +39,6 @@ export const productSlice = createSlice({
         })
     }
 })
+export const {addToCart} = productSlice.actions;
 
 export default productSlice.reducer;
